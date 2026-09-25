@@ -33,10 +33,6 @@ Y cada hallazgo queda enganchado a su comando y a su evidencia dentro de un **in
 profesional**, exportable a PDF y **firmado con Ed25519** (cualquier manipulación posterior
 se detecta):
 
-<p align="center">
-  <img src="docs/img/reporte.png" alt="Informe generado por VulnFlow" width="620"/>
-</p>
-
 ---
 
 ## 🧠 ¿Por qué VulnFlow?
