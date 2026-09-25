@@ -53,6 +53,79 @@ se detecta):
 
 ---
 
+## 📦 Instalación y arranque
+
+> La herramienta corre **100% local** (sin internet después de instalar las
+> dependencias): solo necesitas Python 3.11+ y, si quieres PostgreSQL, Docker.
+
+### Requisitos previos
+
+| Dependencia | Necesaria | Detalles |
+|---|---|---|
+| Python ≥ 3.11 | ✅ Sí | Se detecta automáticamente; probado en 3.14 |
+| Docker + Compose v2 | ⚠️ Opcional | Solo si usas PostgreSQL en lugar del fallback SQLite |
+| nmap / gobuster / ffuf / dig / curl / metasploit | ⚠️ Opcional | Se detectan solas; las ausentes quedan deshabilitadas en el panel |
+
+### Paso 1 · Descargar y descomprimir
+
+```bash
+unzip VulnFlow.zip
+cd VulnFlow
+```
+
+(o si lo clonaste: `git clone …VulnFlow && cd VulnFlow`)
+
+### Paso 2 · Instalar dependencias
+
+```bash
+./instalar.sh
+```
+
+Crea el entorno virtual `.venv/` e instala FastAPI, SQLAlchemy, SQLite/psycopg,
+Jinja2, WeasyPrint y `cryptography`. Sin Docker y sin internet se instala igual:
+la BD portátil (SQLite) no necesita servicios.
+
+### Paso 3 · Bases de datos (opcional)
+
+**Opción A · PostgreSQL 16 (recomendado para algo serio):**
+
+```bash
+./infra/levantar-db.sh up -d
+```
+
+* Verifica: `./infra/levantar-db.sh ps` (debe aparecer `(healthy)`).
+* Puerto anfitrión: **5434** (no pisa el 5432/5433 de otros servicios).
+
+**Opción B · Sin base de datos (SQLite):**
+
+No hagas nada: si no hay PostgreSQL accesible, VulnFlow degrada solo a
+`data/vulnflow.db`. Perfecto para probar o para equipos sin Docker.
+
+### Paso 4 · Arrancar VulnFlow
+
+```bash
+./arrancar.sh start
+```
+
+* Panel web → **http://127.0.0.1:8002/**
+* Documentación de la API (Swagger) → **http://127.0.0.1:8002/docs**
+* Estado → `./arrancar.sh status` · Logs → `./arrancar.sh log`
+
+### Paso 5 · Primera auditoría de prueba
+
+```bash
+.venv/bin/python seed.py     # registra 127.0.0.1 y ejecuta 2 comandos de ejemplo
+```
+
+Luego, en el panel:
+
+1. **Activos** → registra tu objetivo (IP o dominio).
+2. **Ejecutar** → elige p. ej. `Nmap · Servicios y versiones` → *▶ Ejecutar*.
+3. **Resultados** → abre la ejecución, **selecciona** un fragmento de la salida
+   y pulsa *✂ Marcar selección* → rellenas severidad/título/remediación.
+4. **Reportes** → *Generar* → obtienes `report_*.md` (+`.pdf` y firma `*.sig`).
+
+
 ## 🚀 Características
 
 - **🎯 Activos** — registra IP/dominio con SO y descripción; cada uno acumula su historial.
