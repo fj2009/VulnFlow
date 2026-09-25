@@ -1,0 +1,36 @@
+VulnFlow · Orquestación de pentesting con auto-documentación
+===========================================================
+
+Distribución de fuentes (sin venv, sin datos de ejecución).
+
+Al descomprimirla:
+
+    unzip VulnFlow.zip
+    cd VulnFlow
+
+    # 1) Instalador (venv + dependencias)
+    ./instalar.sh
+
+    # 2) Base de datos PostgreSQL 16 (puerto 5434) — OPCIONAL:
+    #    si la omites, la herramienta funciona igual sobre SQLite.
+    ./infra/levantar-db.sh up -d
+
+    # 3) Arrancar el panel
+    ./arrancar.sh start
+
+    # 4) Web de uso
+    #    → http://127.0.0.1:8002/
+    #    (swagger: http://127.0.0.1:8002/docs)
+
+    # 5) Demo: activo local + 2 ejecuciones de ejemplo
+    .venv/bin/python seed.py
+
+    # Parada
+    ./arrancar.sh stop
+    ./infra/levantar-db.sh down
+
+Requiere: Python 3.11+, Docker (solo si usas Postgres). Todas las herramientas
+del catálogo (nmap, gobuster, ffuf, dig, curl, metasploit) se detectan solas:
+las que falten quedan deshabilitadas en el panel.
+
+⚠ Uso exclusivo contra activos autorizados. Documentación completa: README.md
